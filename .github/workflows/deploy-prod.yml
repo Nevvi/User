@@ -1,4 +1,4 @@
-name: Upload Prod Authentication
+name: Upload Prod User
 
 on:
   push:

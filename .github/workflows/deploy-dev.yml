@@ -1,4 +1,4 @@
-name: Upload Dev Authentication
+name: Upload Dev User
 
 on:
   push:
