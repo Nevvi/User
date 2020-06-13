@@ -2,10 +2,22 @@ service:
   name: user
 
 plugins:
+  - serverless-prune-plugin
+  - serverless-iam-roles-per-function
   - serverless-webpack
   - serverless-domain-manager
 
 custom:
+  prune:
+    automatic: true
+    number: 2
+  serverless-iam-roles-per-function:
+    defaultInherit: true
+  userTableNameMap:
+    default: dev-user
+    production: user
+  userTableName: ${self:custom.userTableNameMap.${self:provider.stage}, self:custom.userTableNameMap.default}
+  userTableArn: ${ssm:/nevvi/dynamodb/${self:custom.userTableName}/arn}
   domainNameMap:
     default: api.development.nevvi.net
     production: api.nevvi.net
@@ -27,11 +39,18 @@ provider:
   deploymentBucket:
     name: nevvi-serverless-deployment-bucket
   deploymentPrefix: ${self:provider.stage}
+  environment:
+    USER_TABLE: ${self:custom.userTableName}
 
 functions:
-  test:
-    handler: src/functions/UserHandler.test
+  getUser:
+    handler: src/functions/UserHandler.getUser
     events:
       - http:
-          path: /v1/test
+          path: /v1/{userId}
           method: get
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+        Resource: ${self:custom.userTableArn}

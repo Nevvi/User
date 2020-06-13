@@ -1,5 +1,6 @@
 'use strict'
 
+const {UserNotFoundError} = require('../error/Errors')
 const UserDao = require('../dao/UserDao')
 
 module.exports = class AuthenticationService {
@@ -7,7 +8,13 @@ module.exports = class AuthenticationService {
         this.userDao = new UserDao()
     }
 
-    async getUser() {
-        return await this.userDao.getUser()
+    async getUser(userId) {
+        const user = await this.userDao.getUser(userId)
+
+        if (!user) {
+            throw new UserNotFoundError(userId)
+        }
+
+        return user
     }
 }

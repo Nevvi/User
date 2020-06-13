@@ -3,10 +3,11 @@
 const UserService = require('../service/UserService')
 const userService = new UserService()
 
-module.exports.test = async (event) => {
+module.exports.getUser = async (event) => {
     try{
         console.log("Received request to get user")
-        const user = await userService.getUser()
+        const {userId} = event.pathParameters
+        const user = await userService.getUser(userId)
         return createResponse(200, user)
     } catch (e) {
         return createResponse(e.statusCode, e.message)
