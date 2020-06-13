@@ -14,7 +14,7 @@ custom:
   serverless-iam-roles-per-function:
     defaultInherit: true
   userTableNameMap:
-    default: dev-user
+    default: user-dev
     production: user
   userTableName: ${self:custom.userTableNameMap.${self:provider.stage}, self:custom.userTableNameMap.default}
   userTableArn: ${ssm:/nevvi/dynamodb/${self:custom.userTableName}/arn}
