@@ -47,10 +47,21 @@ functions:
     handler: src/functions/UserHandler.getUser
     events:
       - http:
-          path: /v1/{userId}
+          path: /v1/users/{userId}
           method: get
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:GetItem
+        Resource: ${self:custom.userTableArn}
+  createUser:
+    handler: src/functions/UserHandler.createUser
+    events:
+      - http:
+          path: /v1/users
+          method: post
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
         Resource: ${self:custom.userTableArn}

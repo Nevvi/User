@@ -13,3 +13,10 @@ module.exports.UserNotFoundError = class extends Error {
         this.statusCode = 400;
     }
 }
+
+module.exports.UserAlreadyExistsError = class extends Error {
+    constructor(userId) {
+        super(`User already exists with id: ${userId}`)
+        this.statusCode = 409;
+    }
+}
