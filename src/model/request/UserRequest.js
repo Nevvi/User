@@ -8,8 +8,8 @@ module.exports = class Request {
         this.validationSchema = schema
     }
 
-    validate() {
-        const {error} = Joi.object().keys(this.validationSchema).validate(this, {convert: false, stripUnknown: true})
+    validate(body) {
+        const {error} = Joi.object().keys(this.validationSchema).validate(body ? body : this, {convert: false, stripUnknown: true})
         if (error) {
             throw new InvalidRequestError(error.message)
         }

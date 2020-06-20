@@ -65,3 +65,15 @@ functions:
         Action:
           - dynamodb:PutItem
         Resource: ${self:custom.userTableArn}
+  updateUser:
+    handler: src/functions/UserHandler.updateUser
+    events:
+      - http:
+          path: /v1/users/{userId}
+          method: patch
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+        Resource: ${self:custom.userTableArn}
