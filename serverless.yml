@@ -54,7 +54,7 @@ functions:
           authorizer:
             name: userAuthorizer
             resultTtlInSeconds: 0
-            type: token
+            type: request
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -80,7 +80,7 @@ functions:
           authorizer:
             name: userAuthorizer
             resultTtlInSeconds: 0
-            type: token
+            type: request
     iamRoleStatements:
       - Effect: Allow
         Action:
