@@ -21,7 +21,10 @@ jobs:
         aws configure set default.region us-east-1
     - name: Initialize
       run: npm install
-    - uses: serverless/github-action@master
+    - name: Initialize submodules
+      run: cd Common && npm install
+    - name: Deploy
+      uses: serverless/github-action@master
       with:
         args: deploy --stage development
       env:
