@@ -28,6 +28,10 @@ custom:
   customDomain:
     domainName: ${self:custom.domainNameMap.${self:provider.stage}, self:custom.domainNameMap.default}
     basePath: ${self:custom.basePathMap.${self:provider.stage}, self:custom.basePathMap.default}
+  apiUserPoolArnMap:
+    default: ${ssm:/nevvi/cognito/nevvi-development-api-users/arn}
+    production: ${ssm:/nevvi/cognito/nevvi-api-users/arn}
+  apiUserPoolArn: ${self:custom.apiUserPoolArnMap.${self:provider.stage}, self:custom.apiUserPoolArnMap.default}
 
 provider:
   name: aws
@@ -64,8 +68,12 @@ functions:
     handler: src/functions/UserHandler.createUser
     events:
       - http:
-          path: /v1/users
+          path: /api/v1/users
           method: post
+          authorizer:
+            arn: ${self:custom.apiUserPoolArn}
+            scopes:
+              - user_api/user_api.all
     iamRoleStatements:
       - Effect: Allow
         Action:
