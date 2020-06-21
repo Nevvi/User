@@ -1,9 +1,9 @@
-name: Upload Dev User
+name: Upload Prod User
 
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   deploy:
