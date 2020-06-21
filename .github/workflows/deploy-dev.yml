@@ -12,6 +12,8 @@ jobs:
     - uses: actions/checkout@master
     - name: Checkout submodules
       uses: textbook/git-checkout-submodule-action@master
+      with:
+        remote: true
     - name: Configure AWS
       run: |
         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
