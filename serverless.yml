@@ -43,12 +43,18 @@ provider:
     USER_TABLE: ${self:custom.userTableName}
 
 functions:
+  userAuthorizer:
+    handler: src/functions/Authorizer.authorize
   getUser:
     handler: src/functions/UserHandler.getUser
     events:
       - http:
           path: /v1/users/{userId}
           method: get
+          authorizer:
+            name: userAuthorizer
+            resultTtlInSeconds: 0
+            type: token
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -71,6 +77,10 @@ functions:
       - http:
           path: /v1/users/{userId}
           method: patch
+          authorizer:
+            name: userAuthorizer
+            resultTtlInSeconds: 0
+            type: token
     iamRoleStatements:
       - Effect: Allow
         Action:
